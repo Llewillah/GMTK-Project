@@ -14,10 +14,17 @@ public class RopeVerlet : MonoBehaviour
     [Header("Physics")]
     [SerializeField] private Vector2 gravityForce = new Vector2(0f, -2f);
     [SerializeField] private float dampingFactor = 0.98f;
+    [SerializeField] private LayerMask collisionMask;
+    [SerializeField] private float collisionRadius = 0.1f;
+    [SerializeField] private float bounceFactor = 0.1f;
+    [SerializeField] private float correctionClamp = 0.1f;
 
     [Header("Constraints")]
     [SerializeField] private int numOfConstraints = 50;
     [SerializeField] private Transform anchorObject, player;
+
+    [Header("Optimisations")]
+    [SerializeField] private int collisionSegmentInterval = 2;
 
     private LineRenderer lineRenderer;
     private List<RopeSegment> ropeSegments = new List<RopeSegment>();
@@ -50,6 +57,11 @@ public class RopeVerlet : MonoBehaviour
         for (int i = 0; i < numOfConstraints; i++) 
         {
             ApplyConstraints();
+
+            if (i % collisionSegmentInterval == 0)
+            {
+                HandleCollisions();
+            }
         }
     }
     private void DrawRope() 
@@ -114,6 +126,39 @@ public class RopeVerlet : MonoBehaviour
 
             ropeSegments[i] = curSeg;
             ropeSegments[i + 1] = nextSeg;
+        }
+    }
+
+    private void HandleCollisions() 
+    {
+        for (int i = 1; i < ropeSegments.Count; i++) 
+        {
+            RopeSegment segment = ropeSegments[i];
+            Vector2 velocity = segment.currentPosition - segment.oldPosition;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(segment.currentPosition, collisionRadius, collisionMask);
+
+            foreach (Collider2D collider in colliders) 
+            {
+                Vector2 closestPoint = collider.ClosestPoint(segment.currentPosition);
+                float distance = Vector2.Distance(segment.currentPosition, closestPoint);
+
+                if (distance < collisionRadius) 
+                {
+                    Vector2 normal = (segment.currentPosition - closestPoint).normalized;
+                    if (normal == Vector2.zero) 
+                    {
+                        normal = (segment.currentPosition - (Vector2)collider.transform.position).normalized;
+                    }
+
+                    float depth = collisionRadius - distance;
+                    segment.currentPosition += normal * depth;
+
+                    velocity = Vector2.Reflect(velocity, normal) * bounceFactor;
+                }
+            }
+
+            segment.oldPosition = segment.currentPosition - velocity;
+            ropeSegments[i] = segment;
         }
     }
     public struct RopeSegment 
