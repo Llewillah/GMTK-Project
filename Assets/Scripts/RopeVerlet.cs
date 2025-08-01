@@ -17,6 +17,7 @@ public class RopeVerlet : MonoBehaviour
 
     [Header("Constraints")]
     [SerializeField] private int numOfConstraints = 50;
+    [SerializeField] private Transform anchorObject, player;
 
     private LineRenderer lineRenderer;
     private List<RopeSegment> ropeSegments = new List<RopeSegment>();
@@ -79,8 +80,12 @@ public class RopeVerlet : MonoBehaviour
     private void ApplyConstraints() 
     {
         RopeSegment firstSeg = ropeSegments[0];
-        firstSeg.currentPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        firstSeg.currentPosition = player.position;
         ropeSegments[0] = firstSeg;
+
+        RopeSegment lastSeg = ropeSegments[numOfRopeSeg - 1];
+        lastSeg.currentPosition = anchorObject.position;
+        ropeSegments[numOfRopeSeg - 1] = lastSeg;
 
         for (int i = 0; i < numOfRopeSeg - 1; i++) 
         { 
@@ -98,7 +103,11 @@ public class RopeVerlet : MonoBehaviour
                 curSeg.currentPosition -= (changeVector * 0.5f);
                 nextSeg.currentPosition += (changeVector * 0.5f);
             }
-            else 
+            else if (i == numOfRopeSeg - 2) 
+            {
+                curSeg.currentPosition += changeVector;
+            }
+            else
             {
                 nextSeg.currentPosition += changeVector;
             }
