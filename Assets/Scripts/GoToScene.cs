@@ -26,4 +26,9 @@ public class GoToScene : MonoBehaviour
             SceneManager.LoadScene(SceneManager.loadedSceneCount + 1);
         } 
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

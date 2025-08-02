@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject pauseUI;
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private bool canMove = true;
 
     private void Start()
     {
@@ -19,12 +20,16 @@ public class PlayerMovement : MonoBehaviour
             pauseUI.SetActive(!pauseUI.activeSelf);
         }
 
-        moveInput.x = Input.GetAxisRaw("Horizontal");
-        moveInput.y = Input.GetAxisRaw("Vertical");
+        if (canMove) 
+        {
+            moveInput.x = Input.GetAxisRaw("Horizontal");
+            moveInput.y = Input.GetAxisRaw("Vertical");
 
-        moveInput.Normalize();
+            moveInput.Normalize();
 
-        rb.linearVelocity = moveInput * moveSpeed;
+            rb.linearVelocity = moveInput * moveSpeed;
+        }
+        
 
         if (pauseUI.activeSelf == true)
         {
@@ -39,5 +44,11 @@ public class PlayerMovement : MonoBehaviour
     public void UnpauseUI()
     {
         pauseUI.SetActive(false);
+    }
+
+    public void SetCanMove(bool canMove) 
+    { 
+        this.canMove = canMove;
+        rb.linearVelocity = new Vector3(0,0,0); //stop all movement
     }
 }
