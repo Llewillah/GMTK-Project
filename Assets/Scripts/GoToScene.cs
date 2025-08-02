@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GoToScene : MonoBehaviour
+public static class GoToScene
 {
     //public Scene startScreen;
     //public Scene level1;
@@ -10,12 +10,12 @@ public class GoToScene : MonoBehaviour
     //public Scene level4;
     //public Scene level5;
 
-    public void GoToStartScreen()
+    public static void GoToStartScreen()
     {
         SceneManager.LoadScene(0);
     }
 
-    public void GoToNextLevel()
+    public static void GoToNextLevel()
     {
         if (SceneManager.loadedSceneCount == 0)
         {
@@ -27,7 +27,7 @@ public class GoToScene : MonoBehaviour
         } 
     }
 
-    public void ExitGame()
+    public static void ExitGame()
     {
         Application.Quit();
     }

@@ -9,7 +9,7 @@ public class RopeVerlet : MonoBehaviour
     [Header("Rope")]
     [SerializeField] private int numOfRopeSeg = 50;
     [SerializeField] private float ropeSegLength = 0.225f;
-
+    [SerializeField] private Texture tex;
 
     [Header("Physics")]
     [SerializeField] private Vector2 gravityForce = new Vector2(0f, -2f);
@@ -35,6 +35,7 @@ public class RopeVerlet : MonoBehaviour
     {
        lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = numOfRopeSeg;
+        //lineRenderer.material.SetTexture("_MainText", tex);
 
         ropeStartPoint = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
