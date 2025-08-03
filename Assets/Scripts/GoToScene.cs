@@ -23,7 +23,7 @@ public static class GoToScene
         }
         else
         {
-            SceneManager.LoadScene(SceneManager.loadedSceneCount + 1);
+            SceneManager.LoadScene(SceneManager.loadedSceneCount);
         } 
     }
 
