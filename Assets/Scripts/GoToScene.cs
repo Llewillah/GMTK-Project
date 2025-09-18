@@ -3,12 +3,12 @@ using UnityEngine.SceneManagement;
 
 public static class GoToScene
 {
-    //public Scene startScreen;
-    //public Scene level1;
-    //public Scene level2;
-    //public Scene level3;
-    //public Scene level4;
-    //public Scene level5;
+    public static Scene StartScreen;
+    public static Scene Level1;
+    public static Scene Level2;
+    public static Scene Level3;
+    public static Scene Level4;
+    public static Scene Level5;
 
     public static void GoToStartScreen()
     {

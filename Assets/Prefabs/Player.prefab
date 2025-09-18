@@ -196,7 +196,7 @@ MonoBehaviour:
   lowestLightRadius: 2
   lightTimer: 1
   damageTakenAudio: {fileID: 7221332330076582661}
-  HADESISUPONUS: {fileID: 0}
+  HADESISUPONUS: {fileID: 4690435028664420408, guid: 1818a8c94a076bd448829084c74b5753, type: 3}
   respawnUI: {fileID: 0}
 --- !u!82 &7221332330076582661
 AudioSource:
